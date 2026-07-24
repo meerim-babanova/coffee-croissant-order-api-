@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2> API for Order </h2>
+    <div id="message"></div>
+    <div>
+       <p>Customer Name: <input type="text" id="CustomerId"/></p><br />
+        <p>Coffee quantity: <input type="number" id="CoffeeQtyId" value="0"/></p><br />
+        <p>Croissant quantity: <input type="number" id="CroissantQtyId" value="0"/></p><br />
+        <button type="button" id="ButtonId">Order!</button>
+    </div>
+    <script>
+        document.getElementById("ButtonId").addEventListener("click", send);
+        async function send() {
+            const response = await fetch(
+                "/api/order",
+                {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    CustomerName: document.getElementById("CustomerId").value,
+                    Items: [
+                        { Name: "Coffee", Quantity: Number(document.getElementById("CoffeeQtyId").value), Price: 3.5},
+                        { Name: "Croissant", Quantity: Number(document.getElementById("CroissantQtyId").value), Price: 2.5}
+                    ]
+                })
+                });
+
+            const message = await response.json();
+            document.getElementById("message").innerText = message.text;
+        }
+
+    </script>
+</body>
+</html>
